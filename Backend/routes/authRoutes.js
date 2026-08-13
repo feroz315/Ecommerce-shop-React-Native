@@ -1,0 +1,701 @@
+const express = require('express');
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const client = require('../database/db.js');
+const path = require('path');
+const { sendResetEmail } = require('../producthelper/emailservice.js')
+
+
+const authenticateToken = require('../middleware/reqToken.js');
+const fs = require("fs");
+const multer = require("multer");
+
+
+
+const router = express.Router();
+
+
+// Generate secure token
+function generateToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+// Check if email already exists (excluding current user)
+const checkEmailExists = async (email, id) => {
+  const result = await client.query(
+    'SELECT id FROM users WHERE email = $1 AND id != $2',
+    [email, id]
+  );
+  return result.rows.length > 0;
+};
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "Strict",
+  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+};
+
+
+const storage = multer.diskStorage({
+  destination : (req, file, cb) => {
+    cb(null, "uploads/")
+  },
+  filename: (req,file,cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+})
+
+// Configure multer for file storage
+
+// const storage = multer.memoryStorage();
+
+const upload = multer({ storage })
+
+
+// Endpoint to handle upload
+router.post('/upload', upload.single('image'), async (req, res) => {
+  
+  if (!req.file) return res.status(400).send('No file uploaded');
+
+  const { filename, path: filepath  } = req.file;
+  
+  try {
+    const query = 'INSERT INTO images (filename, filepath) VALUES ($1 ,$2)';
+    await client.query(query, [filename, filepath]);
+    res.status(200).send('Image uploaded successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Database error');
+  }
+});
+
+
+// Register
+router.post("/register", async (req, res) => {
+  const { name, email, password } = req.body;
+  
+  if (!name || !email || !password ) {
+    return res
+      .status(400)
+      .json({ message: "Please provide all required fields" });
+  }
+
+  const userExists = await client.query("SELECT * FROM users WHERE email = $1", [
+    email,
+  ]);
+
+  if (userExists.rows.length > 0) {
+    return res.status(400).json({ message: "User already exists" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = await client.query(
+    "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email",
+    [name, email, hashedPassword]
+  );
+
+  const token = generateToken(newUser.rows[0].id);
+
+  res.cookie("token", token, cookieOptions);
+
+  return res.status(201).json({ user: newUser.rows[0] });
+});
+
+
+// Login (Generates Token)
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const result = await client.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (result.rows.length === 0) return res.status(400).json({ message: 'User not found' });
+    
+    const user = result.rows[0];
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) return res.status(400).json({ message: 'Invalid password' });
+
+    const token = jwt.sign({ id: user.id, email: user.email,}, "pak", { expiresIn: '7d' });
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email} });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Logout
+router.post("/logout", (req, res) => {
+  res.cookie("token", "", { ...cookieOptions, maxAge: 1 });
+  res.json({ message: "Logged out successfully" });
+});
+
+
+// Admin Endpoint to import products from JSON
+router.post('/products', async (req, res) => {
+  try {
+    // Read the JSON file
+    const data = fs.readFileSync('products.json', 'utf8');
+    const products = JSON.parse(data);
+
+    // Insert each product into the database
+    for (const product of products) {
+      await client.query(
+        'INSERT INTO products (title, description, category, price, images, currency_code) VALUES ($1, $2, $3, $4, $5, $6)',
+        [product.title, product.description,product.category,product.price,product.images,product.currency_code]
+      );
+    }
+    res.status(200).json({ success: true, message:"Products imported successfully", data: products });
+    } catch (error) {
+    console.error(error);
+    res.status(500).send('Error importing products');
+  }
+});
+
+// GET all products
+router.get('/allproducts', async (req, res) => {
+    try {
+        const result = await client.query('SELECT * FROM products ORDER BY id ASC');
+        console.log("fetched products", result);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+
+// Search Product
+// router.get('/searchproduct', async (req, res) => {
+//     try {
+//         const { query, limit = 10, offset = 0 } = req.query;
+
+//         if (!query) {
+//             return res.status(400).json({ error: 'Search query is required' });
+//         } 
+//        const searchPattern = `%${query}%`;
+//              const result = await client.query(
+//             `SELECT id, title, description, price, category, images, currency_code 
+//              FROM searchitem 
+//              WHERE title ILIKE $1 OR description ILIKE $1
+//              LIMIT $2 OFFSET $3`,
+//             [searchPattern, limit, offset]
+//         );
+
+//         res.json({
+//             success: true,
+//             count: result.rows.length,
+//             data: result.rows
+//         });
+
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Server error' });
+//     }
+// });
+
+
+// Get Settings
+router.get('/settings', authenticateToken, async (req, res) => {
+  try {
+    const result = await client.query('SELECT name, email, FROM users WHERE id = $1', [req.user.id]);
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Update Settings
+
+// router.put('/update-settings', authenticateToken, async (req, res) => {
+//   const { theme_mode, notifications_enabled } = req.body;
+//   try {
+//     await client.query(
+//       'UPDATE users SET theme_mode = $1, notifications_enabled = $2 WHERE id = $3',
+//       [theme_mode, notifications_enabled, req.user.id]
+//     );
+//     res.json({ message: 'Settings updated successfully' });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+
+
+
+
+
+
+
+// 1. CREATE a new delivery address
+router.post('/addresses', async (req, res) => {
+    try {
+        const { 
+            name, 
+            email,
+            phonenumber,
+            address, 
+            city, 
+            postalcode, 
+            country, 
+            } = req.body;
+
+        const newAddress = await client.query(
+            `INSERT INTO delivery_addresses 
+            (name, email, phonenumber, address, city, postalcode, country) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7) 
+            RETURNING * `,
+            [name, email, phonenumber, address, city, postalcode, country]
+        );
+
+        res.json(newAddress.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+// 2. GET all addresses for a specific user
+router.get('/addresses/user/:userid', async (req, res) => {
+    try {
+        const { userid } = req.params;
+        const allAddresses = await client.query(
+            "SELECT * FROM delivery_addresses WHERE userid = $1 ORDER BY created_at DESC",
+            [userid]
+        );
+
+        res.json(allAddresses.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+// 3. GET a single address by ID
+router.get('/addresses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const address = await pool.query(
+            "SELECT * FROM delivery_addresses WHERE id = $1",
+            [id]
+        );
+
+        if (address.rows.length === 0) {
+            return res.status(404).json("Address not found");
+        }
+
+        res.json(address.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+// 4. UPDATE an address
+router.put('/addresses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { 
+            name, 
+            email, 
+            address, 
+            phonenumber,
+            city, 
+            postalcode, 
+            country, 
+            } = req.body;
+
+        const updateAddress = await client.query(
+            `UPDATE delivery_addresses 
+            SET name = $1, email = $2, address = $3, city = $4, 
+            phonenumber = $5, postalcode = $6, country = $7, phone_number  =  
+            WHERE id = $10 
+            RETURNING *`,
+            [name, email, address, city, postalcode, country, phonenumber, id]
+        );
+
+        if (updateAddress.rows.length === 0) {
+            return res.status(404).json("Address not found");
+        }
+
+        res.json("Address was updated!");
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+// 5. DELETE an address
+router.delete('/addresses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteAddress = await client.query(
+            "DELETE FROM delivery_addresses WHERE id = $1 RETURNING *",
+            [id]
+        );
+
+        if (deleteAddress.rows.length === 0) {
+            return res.status(404).json("Address not found");
+        }
+
+        res.json("Address was deleted!");
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+// productgetbyId
+router.get('/product/:id', async (req, res) => {
+  const productId = req.params.id;
+  try {
+    // Use parameterized query to prevent SQL injection
+    const result = await client.query('SELECT * FROM products WHERE id = $1', [productId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json(result.rows[0]); // Return the single product
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// update product
+router.put("/:id", async (req, res) => {
+  
+  const { id } = req.params;
+  const { title, description, category, price, images, currency_code } = req.body;
+
+  try {
+    const updateProduct = await client.query(`
+      UPDATE products
+      SET title=${title}, price=${price}, images=${images}, description=${description}, category=${category}, currency_code=${currency_code}
+      WHERE id=${id}
+      RETURNING *
+    `);
+
+    if (updateProduct.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({ success: true, data: updateProduct[0] });
+  } catch (error) {
+    console.log("Error in updateProduct function", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+
+// delete product
+router.delete("/:id", async (req, res) => {
+  
+ const { id } = req.params;
+
+  try {
+    const deletedProduct = await client.query(`
+      DELETE FROM products WHERE id=${id} RETURNING *
+    `);
+
+    if (deletedProduct.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({ success: true, data: deletedProduct[0] });
+  } catch (error) {
+    console.log("Error in deleteProduct function", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+
+// Get Profile
+router.get("/profile",authenticateToken, async (req, res) => {
+  try {
+    const result = await client.query('SELECT id, email, name FROM users WHERE id = $1', [req.user.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Change Password
+
+// router.put('/profile/password', authenticateToken, async (req, res) => {
+//   const { password, new_password } = req.body;
+//   try {
+//     const user = await client.query('SELECT password FROM users WHERE id = $1', [req.user.id]);
+//     const valid = await bcrypt.compare(password, user.rows[0].password);
+//     if (!valid) return res.status(401).json({ error: 'Invalid current password' });
+
+//     const hashed = await bcrypt.hash(new_password, 10);
+//     await client.query('UPDATE users SET password = $1 WHERE id = $2', [hashed, req.user.id]);
+//     res.json({ message: 'Password updated successfully' });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+// // Update Password Endpoint
+
+// router.put('/profile/password', authenticateToken, async (req, res) => {
+//   const { password, newPassword } = req.body;
+//   const userId = req.user.id;
+
+//   try {
+//     const result = await client.query('SELECT password FROM users WHERE id = $1', [userId]);
+//     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+//     const user = result.rows[0];
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) return res.status(401).json({ error: 'Current password is incorrect' });
+
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+//     await client.query(
+//       'UPDATE users SET password = $1, updated_at = NOW() WHERE id = $2',
+//       [hashedPassword, userId]
+//     );
+
+//     res.json({ message: 'Password updated successfully' });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+router.put('/profile/password', async (req, res) => {
+  const { password, newPassword } = req.body;
+  // Assume userId is retrieved from an authentication token (middleware needed for this)
+  const userId = req.user.id; 
+
+  try {
+    // 1. Fetch the user's current hashed password from the database
+    const userResult = await client.query('SELECT password FROM users WHERE id = $1', [userId]);
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { password: storedHash } = userResult.rows[0];
+
+    // 2. Compare the provided current password with the stored hash
+    const isMatch = await bcrypt.compare(password, storedHash);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Incorrect current password' });
+    }
+
+    // 3. Hash the new password
+    const saltRounds = 10; // or 12
+    const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+    // 4. Update the password hash in the PostgreSQL database
+    await client.query('UPDATE users SET password = $1 WHERE id = $2', [newPasswordHash, userId]);
+
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// 1. Request Password Reset
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if user exists
+    const result = await client.query('SELECT * FROM users WHERE email = $1', [email]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate Token
+    const token = generateToken();
+    const expiry = new Date(Date.now() + 3600000); // 1 hour
+
+    // Save Token to DB
+    await client.query(
+      'UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE email = $3',
+      [token, expiry, email]
+    );
+
+    // Send Email
+    const resetLink = `http://192.168.1.7:3000/api/reset-password?token=${token}`;
+    await sendResetEmail(email, resetLink);
+    res.status(200).json({ message: 'Reset code sent to your email' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Verify Token and Get User
+router.get('/verify-reset-token/:token', async (req, res) => {
+  const { token } = req.params;
+  try {
+    const result = await client.query(
+      `SELECT id, email FROM users
+       WHERE reset_token = $1 AND reset_token_expiry > NOW()`,
+      [token]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+
+    res.json({ valid: true, email: result.rows[0].email });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Reset Password
+// router.post('/reset-password', async (req, res) => {
+//   const { token } = req.params;
+//   const { password } = req.body;
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(password, salt);
+
+//     const result = await client.query(
+//       `UPDATE users 
+//        SET password = $1
+//        FROM users
+//        WHERE reset_token = $2 AND reset_token_expiry > NOW()
+//        RETURNING`,
+//       [hashedPassword, token]
+//     );
+
+//     if (result.rows.length === 0) {
+//       return res.status(400).json({ message: 'Invalid or expired token' });
+//     }
+
+//     // await client.query('UPDATE users SET used = TRUE WHERE token = $1', [token]);
+
+//     res.json({ message: 'Password reset successfully' });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// });
+
+
+// Reset Password
+router.post('/reset-password/:token', async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+  try {
+    const result = await client.query(
+      'SELECT * FROM users WHERE reset_token = $1 AND reset_token_expiry > NOW()',
+      [token]
+    );
+    if (result.rows.length === 0) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await client.query(
+      'UPDATE users SET password = $1 WHERE id = $2',
+      [hashedPassword, result.rows[0].id]
+    );
+
+    res.json({ message: 'Password reset successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Update email endpoint
+router.put('/profile/update-email', authenticateToken, async (req, res) => {
+  const { email } = req.body;
+  const userId = req.user.id; // From auth middleware
+
+  try {
+      
+    // Check if email already exists
+    const existingEmail = await client.query('SELECT * FROM users WHERE email = $1', [email]);
+      if (existingEmail.rows.length > 0) return res.status(400).json({ message: 'Email already in use' });
+  
+    
+    // Update email
+    const updatedUser = await client.query(
+      'UPDATE users SET email = $1 WHERE id = $2 RETURNING *',
+        [email, userId]
+    );
+
+    res.json(updatedUser.rows[0]);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+// Submit new order
+router.post('/submit-order', async (req, res) => {
+  try {
+    const { 
+      customerName, 
+      customerEmail, 
+      customerPhone, 
+      items, 
+      totalAmount, 
+      shippingAddress 
+    } = req.body;
+
+    const newOrder = await client.query(
+      `INSERT INTO orders (customer_name, customer_email,customer_phone, items, total_amount, shipping_address, status) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [customerName, customerEmail,customerPhone, JSON.stringify(items), totalAmount, shippingAddress, 'pending']
+    );
+
+    res.status(201).json({
+      success: true,
+      order: newOrder.rows[0],
+      message: 'Order submitted successfully!'
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+
+
+module.exports = router;
+
+
+
+
+
+
+
+
+
+
