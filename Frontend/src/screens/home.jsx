@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
+
 const HomeScreen = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home Screen</Text>
-      <Text style={styles.subtitle}>Welcome to the app!</Text>
+      <Text style={styles.subtitle}>Welcome to the ClickKhaas!</Text>
       
       <TouchableOpacity 
         style={styles.button}
