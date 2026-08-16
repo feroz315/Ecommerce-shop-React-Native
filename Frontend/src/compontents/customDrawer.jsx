@@ -19,7 +19,7 @@ const CustomDrawerContent = (props) => {
         </View>
         
         <DrawerItemList {...props} />
-      </DrawerContentScrollView>
+       </DrawerContentScrollView>
       
       <View style={styles.footer}>
         <TouchableOpacity 
