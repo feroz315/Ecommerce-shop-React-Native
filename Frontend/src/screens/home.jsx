@@ -1,14 +1,61 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {useState, useEffect} from 'react';
+import { View, Image,Text, StyleSheet, TouchableOpacity,FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { shoesData } from "../config/api"
 
+
+const URL_API = "https://mocki.io/v1/20a23fa8-7a39-45e8-9393-e03c275b28dd";
 
 
 const HomeScreen = () => {
+  
+  const [products, setProducts] = useState([]);
+ 
   const navigation = useNavigation();
+
+
+  // const getdata = async () => {
+  //   try {
+  //     const res = await axios.get(URL_API);
+  //     console.log(res.data);
+  //     setProducts(res.data);
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   }
+  // };
+
+
+const renderItem = ({ item }) => (
+    <TouchableOpacity>
+      <Image 
+        source={{ uri: item.thumbnail }} 
+        resizeMode="cover"
+      />
+      <View>
+        <Text>{item.name}</Text>
+        <Text>{item.brand}</Text>
+        <Text>${item.price}</Text>
+        <Text>⭐ {item.rating} ({item.reviews})</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+
+  // useEffect(() => {
+  //   getdata();
+    
+  // }, []);
+
 
   return (
     <View style={styles.container}>
+     
+     <FlatList
+      data={shoesData.shoes}
+      renderItem={renderItem}
+      keyExtractor={item => item.id.toString()}
+      numColumns={2}      
+    />
       <Text style={styles.title}>Home Screen</Text>
       <Text style={styles.subtitle}>Welcome to the ClickKhaas!</Text>
       

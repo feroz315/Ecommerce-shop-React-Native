@@ -63,3 +63,50 @@ const styles = StyleSheet.create({
 });
 
 export default AboutScreen;
+
+
+
+
+
+const ProductDetail = ({ route }) => {
+  const { shoe } = route.params;
+  
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <FlatList
+          horizontal
+          data={shoe.images}
+          renderItem={({ item }) => (
+            <Image source={{ uri: item }} style={styles.mainImage} />
+          )}
+          pagingEnabled
+          keyExtractor={(item, index) => index.toString()}
+        />
+        
+        <View style={styles.details}>
+          <Text style={styles.name}>{shoe.name}</Text>
+          <Text style={styles.brand}>{shoe.brand}</Text>
+          <Text style={styles.price}>${shoe.price}</Text>
+          <Text style={styles.rating}>⭐ {shoe.rating} ({shoe.reviews} reviews)</Text>
+          
+          <Text style={styles.sectionTitle}>Available Sizes</Text>
+          <View style={styles.sizeContainer}>
+            {shoe.sizes.map(size => (
+              <TouchableOpacity key={size} style={styles.sizeButton}>
+                <Text>{size}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          
+          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={styles.description}>{shoe.description}</Text>
+          
+          <TouchableOpacity style={styles.addToCart}>
+            <Text style={styles.addToCartText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
