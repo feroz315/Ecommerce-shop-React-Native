@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
+
 // Import screens
 import HomeScreen from './src/screens/home';
 import ProfileScreen from './src/screens/profile';
