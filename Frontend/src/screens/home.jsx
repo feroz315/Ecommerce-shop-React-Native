@@ -1,7 +1,8 @@
 import {useState, useEffect} from 'react';
 import { View, Image,Text, StyleSheet, TouchableOpacity,FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { shoesData } from "../config/api"
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import { shoesData } from "../config/api";
 
 
 
@@ -33,11 +34,13 @@ const renderItem = ({ item }) => (
         source={{ uri: item.thumbnail }} 
         resizeMode="cover"
       />
+      
       <View>
-        <Text>{item.name}</Text>
-        <Text>{item.brand}</Text>
-        <Text>${item.price}</Text>
-        <Text>⭐ {item.rating} ({item.reviews})</Text>
+       {/* <Image source={[item.images]} style={styles.productImage} /> */}
+        <Text style={styles.productTitle}>{item.name}</Text>
+        <Text style={styles.productCategory}>{item.brand}</Text>
+        <Text style={styles.productPrice}>${item.price}</Text>
+        <Text style={styles.ratingText}>⭐ {item.rating} ({item.reviews})</Text>
       </View>
     </TouchableOpacity>
   );
@@ -112,6 +115,25 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  productTitle: {
+    fontSize: moderateScale(15),
+    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
+    color: '#1A1A1A',
+    marginBottom: verticalScale(8),
+  },
+  productCategory: {
+    fontSize: moderateScale(12),
+    color: '#8D8D8D',
+    marginBottom: verticalScale(3),
+  },
+  productPrice: {
+    fontSize: moderateScale(15),
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    textAlign: 'center',
+    color: '#FF6B6B',
   },
 });
 
