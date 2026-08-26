@@ -30,12 +30,19 @@ const HomeScreen = () => {
 
 const renderItem = ({ item }) => (
     <TouchableOpacity>
-      <Image 
-        source={{ uri: item.thumbnail }} 
-        resizeMode="cover"
+      {/* <Image 
+        source={item.image} 
+        // resizeMode="cover"
+        //  style={{
+        //   height: '50%',
+        //   width: '200%',
+        // }}
+        style={styles.productImage}
       />
-      
-      <View>
+       */}
+      <View style={styles.productCard}>
+       <Image source={item.image} style={styles.productImage} />
+
        {/* <Image source={[item.images]} style={styles.productImage} /> */}
         <Text style={styles.productTitle}>{item.name}</Text>
         <Text style={styles.productCategory}>{item.brand}</Text>
@@ -60,8 +67,9 @@ const renderItem = ({ item }) => (
       renderItem={renderItem}
       keyExtractor={item => item.id.toString()}
       numColumns={2}      
+      
     />
-      <Text style={styles.title}>Home Screen</Text>
+      {/* <Text style={styles.title}>Home Screen</Text>
       <Text style={styles.subtitle}>Welcome to the ClickKhaas!</Text>
       
       <TouchableOpacity 
@@ -77,6 +85,7 @@ const renderItem = ({ item }) => (
       >
         <Text style={styles.buttonText}>Go to Profile</Text>
       </TouchableOpacity>
+       */}
     </View>
   );
 };
@@ -115,6 +124,25 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  productCard: {
+    width: scale(160),
+    height: verticalScale(235),
+    backgroundColor: '#FFFFFF',
+    borderRadius: moderateScale(25),
+    marginLeft: scale(5),
+    marginRight: scale(5),
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  productImage: {
+    width: '100%',
+    height: verticalScale(130),
+    resizeMode: 'cover',
   },
   productTitle: {
     fontSize: moderateScale(15),

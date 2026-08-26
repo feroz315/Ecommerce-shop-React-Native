@@ -19,7 +19,7 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500",
         "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300"
+      "image": require('../assets/Images/nike.png')
     },
     {
       "id": 2,
@@ -39,7 +39,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=500",
         "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=300"
+      "image": require('../assets/Images/photo.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=300"
     },
     {
       "id": 3,
@@ -58,7 +59,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1539185441755-769473a23570?w=500",
         "https://images.unsplash.com/photo-1539185441755-769473a23570?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=300"
+      "image": require('../assets/Images/photo1.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=300"
     },
     {
       "id": 4,
@@ -77,7 +79,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500",
         "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=300"
+      "image": require('../assets/Images/photo2.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=300"
     },
     {
       "id": 5,
@@ -96,7 +99,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1618336753974-aae8e04506b2?w=500",
         "https://images.unsplash.com/photo-1618336753974-aae8e04506b2?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1618336753974-aae8e04506b2?w=300"
+      "image": require('../assets/Images/photo3.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1618336753974-aae8e04506b2?w=300"
     },
     {
       "id": 6,
@@ -115,7 +119,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500",
         "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=300"
+      "image": require('../assets/Images/photo4.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=300"
     },
     {
       "id": 7,
@@ -134,7 +139,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1605348532760-1633c6c8df6c?w=500",
         "https://images.unsplash.com/photo-1605348532760-1633c6c8df6c?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1605348532760-1633c6c8df6c?w=300"
+      "image": require('../assets/Images/photo5.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1605348532760-1633c6c8df6c?w=300"
     },
     {
       "id": 8,
@@ -153,7 +159,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=500",
         "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300"
+      "image": require('../assets/Images/photo6.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300"
     },
     {
       "id": 9,
@@ -172,7 +179,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
         "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300"
+      "image": require('../assets/Images/photo2.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300"
     },
     {
       "id": 10,
@@ -191,7 +199,8 @@ export const shoesData = {
         "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=500",
         "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=500"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=300"
+      "image": require('../assets/Images/photo3.png')
+      // "thumbnail": "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=300"
     }
   ]
 }
