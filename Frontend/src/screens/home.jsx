@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState } from 'react';
 import { View, Image,Text, StyleSheet, TouchableOpacity,FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
@@ -40,27 +40,27 @@ const renderItem = ({ item }) => (
         style={styles.productImage}
       />
        */}
+       <View style={{marginTop:50}}>
+
       <View style={styles.productCard}>
        <Image source={item.image} style={styles.productImage} />
-
        {/* <Image source={[item.images]} style={styles.productImage} /> */}
         <Text style={styles.productTitle}>{item.name}</Text>
         <Text style={styles.productCategory}>{item.brand}</Text>
         <Text style={styles.productPrice}>${item.price}</Text>
         <Text style={styles.ratingText}>⭐ {item.rating} ({item.reviews})</Text>
       </View>
+       </View>
     </TouchableOpacity>
   );
 
 
-  // useEffect(() => {
-  //   getdata();
-    
-  // }, []);
-
 
   return (
     <View style={styles.container}>
+    <View>
+      <Text>CLICK KHAAS</Text>
+    </View>
      
      <FlatList
       data={shoesData.shoes}

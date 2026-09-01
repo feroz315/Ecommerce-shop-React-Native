@@ -19,36 +19,39 @@ const App = () => {
     <SafeAreaProvider>
       <NavigationContainer>
         <Drawer.Navigator
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#6200ee',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            drawerStyle: {
-              backgroundColor: '#fff',
-              width: 280,
-            },
-            drawerActiveTintColor: '#6200ee',
-            drawerInactiveTintColor: '#333',
-            drawerLabelStyle: {
-              fontSize: 16,
-              fontWeight: '500',
-            },
-          }}
-        >
+        //   drawerContent={(props) => <CustomDrawerContent {...props} />}
+        //   screenOptions={{
+        //     headerStyle: {
+        //       backgroundColor: '#f5f5f5',
+        //     },
+        //     headerTintColor: '#000',
+        //     headerTitleStyle: {
+        //       fontWeight: 'bold',
+        //     },
+        //     drawerStyle: {
+        //       backgroundColor: '#fff',
+        //       width: 280,
+        //     },
+        //     drawerActiveTintColor: '#6200ee',
+        //     drawerInactiveTintColor: '#333',
+        //     drawerLabelStyle: {
+        //       fontSize: 16,
+        //       fontWeight: '500',
+        //     },
+        //   }}
+         >
           <Drawer.Screen 
             name="Home" 
             component={HomeScreen} 
+            // options={{
+            //   title: 'Home',
+            //   // drawerIcon: ({ color, size }) => (
+            //   //   <Icon name="home" color={color} size={size} />
+            //   // ),
+            // }}
             options={{
-              title: 'Home',
-              // drawerIcon: ({ color, size }) => (
-              //   <Icon name="home" color={color} size={size} />
-              // ),
-            }}
+                 headerTitle: '' // Removes the text from the top navigation bar
+             }} 
           />
           <Drawer.Screen 
             name="Profile" 
