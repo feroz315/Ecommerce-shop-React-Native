@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-
 const CustomDrawerContent = (props) => {
   const navigation = useNavigation();
 
