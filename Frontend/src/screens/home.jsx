@@ -6,7 +6,6 @@ import { shoesData } from "../config/api";
 
 
 
-
 const URL_API = "https://mocki.io/v1/20a23fa8-7a39-45e8-9393-e03c275b28dd";
 
 
@@ -59,7 +58,7 @@ const renderItem = ({ item }) => (
   return (
     <View style={styles.container}>
     <View>
-      <Text>CLICK KHAAS</Text>
+      <Text style={styles.productTitle}>CLICK KHAAS</Text>
     </View>
      
      <FlatList
