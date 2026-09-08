@@ -28,7 +28,11 @@ const HomeScreen = () => {
 
 
 const renderItem = ({ item }) => (
-    <TouchableOpacity>
+    <TouchableOpacity
+       onPress={() => {
+                navigation.navigate('ProdcutDetails', {...item});
+              }}>
+           
       {/* <Image 
         source={item.image} 
         // resizeMode="cover"
@@ -39,15 +43,16 @@ const renderItem = ({ item }) => (
         style={styles.productImage}
       />
        */}
-       <View style={{marginTop:50}}>
+    <View style={{marginTop:20}}>
 
       <View style={styles.productCard}>
        <Image source={item.image} style={styles.productImage} />
        {/* <Image source={[item.images]} style={styles.productImage} /> */}
         <Text style={styles.productTitle}>{item.name}</Text>
-        <Text style={styles.productCategory}>{item.brand}</Text>
-        <Text style={styles.productPrice}>${item.price}</Text>
-        <Text style={styles.ratingText}>⭐ {item.rating} ({item.reviews})</Text>
+        <Text style={styles.productBrand}>{item.brand}</Text>
+         <Text style={styles.productPrice}>${item.price}</Text>
+          <Text style={styles.ratingText}>⭐ {item.rating} ({item.reviews})</Text>
+        
       </View>
        </View>
     </TouchableOpacity>
@@ -127,43 +132,50 @@ const styles = StyleSheet.create({
   },
   productCard: {
     width: scale(160),
-    height: verticalScale(235),
+    height: verticalScale(185),
     backgroundColor: '#FFFFFF',
-    borderRadius: moderateScale(25),
+    borderRadius: moderateScale(15),
     marginLeft: scale(5),
     marginRight: scale(5),
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 4,
-    overflow: 'hidden',
+    // shadowColor: '#000',
+    // shadowOffset: {width: 0, height: 2},
+    // shadowOpacity: 0.1,
+    // shadowRadius: 5,
+    // elevation: 4,
+    // overflow: 'hidden',
   },
   productImage: {
     width: '100%',
-    height: verticalScale(130),
+    height: verticalScale(100),
     resizeMode: 'cover',
   },
   productTitle: {
-    fontSize: moderateScale(15),
+    fontSize: moderateScale(14),
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
+    textAlign:'justify',
     color: '#1A1A1A',
-    marginBottom: verticalScale(8),
+    marginBottom: verticalScale(5),
   },
-  productCategory: {
-    fontSize: moderateScale(12),
+  productBrand: {
+    fontSize: moderateScale(14),
     color: '#8D8D8D',
-    marginBottom: verticalScale(3),
+    marginBottom: verticalScale(5),
   },
   productPrice: {
     fontSize: moderateScale(15),
     fontWeight: 'bold',
     letterSpacing: 0.5,
-    textAlign: 'center',
+    // textAlign: 'center',
     color: '#FF6B6B',
   },
-});
+   ratingText: {
+    fontSize: moderateScale(13),
+    fontWeight: 'bold',
+    color: '#FFB800',
+    marginLeft: scale(80),
+  },
+ });
 
 export default HomeScreen;
 

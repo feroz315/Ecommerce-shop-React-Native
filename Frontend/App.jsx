@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
@@ -9,16 +10,16 @@ import HomeScreen from './src/screens/home';
 import ProfileScreen from './src/screens/profile';
 import SettingsScreen from './src/screens/setting';
 import AboutScreen from './src/screens/about';
+import Productdetail from './src/screens/productdetail'
 import CustomDrawerContent from './src/compontents/customDrawer';
 
 
-
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-const App = () => {
+
+const DrawerNavigatior = () => {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
         <Drawer.Navigator
         //   drawerContent={(props) => <CustomDrawerContent {...props} />}
         //   screenOptions={{
@@ -41,18 +42,11 @@ const App = () => {
         //     },
         //   }}
          >
-          <Drawer.Screen 
-            name="Home" 
-            component={HomeScreen} 
-            // options={{
-            //   title: 'Home',
-            //   // drawerIcon: ({ color, size }) => (
-            //   //   <Icon name="home" color={color} size={size} />
-            //   // ),
-            // }}
+         <Drawer.Screen  
             options={{
                  headerTitle: '' // Removes the text from the top navigation bar
              }} 
+             name="Home" component={HomeScreen}
           />
           <Drawer.Screen 
             name="Profile" 
@@ -84,7 +78,22 @@ const App = () => {
               // ),
             }}
           />
-        </Drawer.Navigator>
+         </Drawer.Navigator>
+    
+      );
+};
+
+const App = () => {
+  return (
+
+
+    <SafeAreaProvider>
+      <NavigationContainer>
+      <Stack.Navigator>
+      <Stack.Screen name="Home" component={DrawerNavigatior} />
+      <Stack.Screen name="ProdcutDetails" component={Productdetail} />
+      </Stack.Navigator>
+
       </NavigationContainer>
     </SafeAreaProvider>
   );
