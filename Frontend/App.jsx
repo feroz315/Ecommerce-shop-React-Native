@@ -18,9 +18,9 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 
-const DrawerNavigatior = () => {
+const HomeStackNavigatior = () => {
   return (
-        <Drawer.Navigator
+     <Drawer.Navigator
         //   drawerContent={(props) => <CustomDrawerContent {...props} />}
         //   screenOptions={{
         //     headerStyle: {
@@ -78,24 +78,29 @@ const DrawerNavigatior = () => {
               // ),
             }}
           />
-         </Drawer.Navigator>
-    
-      );
+         </Drawer.Navigator>   
+  );
 };
+
 
 const App = () => {
   return (
-
-
     <SafeAreaProvider>
       <NavigationContainer>
-      <Stack.Navigator>
-      <Stack.Screen name="Home" component={DrawerNavigatior} />
-      <Stack.Screen name="ProdcutDetails" component={Productdetail} />
+ 
+     <Stack.Navigator>
+      <Stack.Screen 
+      options={{ headerTitle: '' }} 
+      name="HomeMenu" component={HomeStackNavigatior} 
+      />
+      <Stack.Screen 
+      options={{  headerTitle: '' }} 
+      name="ProdcutDetails" component={Productdetail} />
       </Stack.Navigator>
-
+      
       </NavigationContainer>
     </SafeAreaProvider>
+    
   );
 };
 
