@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AntDesign from 'react-native-vector-icons/AntDesign'; 
 
 
 
@@ -21,10 +22,11 @@ const Stack = createStackNavigator();
 const HomeStackNavigatior = () => {
   return (
      <Drawer.Navigator
+      
         //   drawerContent={(props) => <CustomDrawerContent {...props} />}
         //   screenOptions={{
         //     headerStyle: {
-        //       backgroundColor: '#f5f5f5',
+        //       backgroundColor: 'transparent',
         //     },
         //     headerTintColor: '#000',
         //     headerTitleStyle: {
@@ -90,8 +92,14 @@ const App = () => {
  
      <Stack.Navigator>
       <Stack.Screen 
-      options={{ headerTitle: '' }} 
+      options={{
+          headerTitle:'',          
+          drawerIcon: ({ color, size }) => (
+            <AntDesign name="plus" size={size} color={color} />
+          ),
+        }}
       name="HomeMenu" component={HomeStackNavigatior} 
+
       />
       <Stack.Screen 
       options={{  headerTitle: '' }} 
@@ -100,7 +108,7 @@ const App = () => {
       
       </NavigationContainer>
     </SafeAreaProvider>
-    
+
   );
 };
 
