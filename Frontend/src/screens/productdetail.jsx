@@ -37,7 +37,7 @@ const colors = [
 
  const ProductDetail = () => {
 
-    const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState('Black');
   const [favorite, setFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -253,20 +253,6 @@ const colors = [
   );
 }
 
-function DetailRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <View style={styles.detailRow}>
-      <Text style={styles.detailLabel}>{label}</Text>
-      <Text style={styles.detailValue}>{value}</Text>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
