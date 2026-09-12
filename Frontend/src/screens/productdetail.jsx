@@ -226,12 +226,12 @@ const colors = [
           {/* Details */}
           <Text style={styles.sectionTitle}>Product Details</Text>
 
-          <View style={styles.detailsCard}>
+          {/* <View style={styles.detailsCard}>
             <DetailRow label="Material" value="Full-grain leather" />
             <DetailRow label="Dimensions" value="42 × 30 × 14 cm" />
             <DetailRow label="Weight" value="1.2 kg" />
             <DetailRow label="Warranty" value="2 years" />
-          </View>
+          </View> */}
         </View>
       </ScrollView>
 

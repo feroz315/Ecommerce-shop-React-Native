@@ -22,7 +22,10 @@ const Stack = createStackNavigator();
 const HomeStackNavigatior = () => {
   return (
      <Drawer.Navigator
-      
+     options={{ 
+      headerTitle:"My Store",
+      headerTitleAlign: 'center',
+     }}  
         //   drawerContent={(props) => <CustomDrawerContent {...props} />}
         //   screenOptions={{
         //     headerStyle: {
@@ -90,10 +93,11 @@ const App = () => {
     <SafeAreaProvider>
       <NavigationContainer>
  
-     <Stack.Navigator>
+     <Stack.Navigator screenOptions={{ headerShown: false }}>
+     
       <Stack.Screen 
       options={{
-          headerTitle:'',          
+          headerTitle:'My Store',          
           drawerIcon: ({ color, size }) => (
             <AntDesign name="plus" size={size} color={color} />
           ),
@@ -126,41 +130,3 @@ export default App;
 
 
 
-
-
-// import React from 'react';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createDrawerNavigator } from '@react-navigation/drawer';
-// import { createStackNavigator } from '@react-navigation/stack';
-
-// // Screens
-// import HomeScreen from './screens/HomeScreen';
-// import DetailsScreen from './screens/DetailsScreen';
-// import ProfileScreen from './screens/ProfileScreen';
-// import SettingsScreen from './screens/SettingsScreen';
-
-// const Drawer = createDrawerNavigator();
-// const Stack = createStackNavigator();
-
-// // Create a Stack Navigator for Home flow
-// function HomeStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Home" component={HomeScreen} />
-//       <Stack.Screen name="Details" component={DetailsScreen} />
-//     </Stack.Navigator>
-//   );
-// }
-
-// // Main App with Drawer containing Stack
-// export default function App() {
-//   return (
-//     <NavigationContainer>
-//       <Drawer.Navigator initialRouteName="Home">
-//         <Drawer.Screen name="Home" component={HomeStack} />
-//         <Drawer.Screen name="Profile" component={ProfileScreen} />
-//         <Drawer.Screen name="Settings" component={SettingsScreen} />
-//       </Drawer.Navigator>
-//     </NavigationContainer>
-//   );
-// }
