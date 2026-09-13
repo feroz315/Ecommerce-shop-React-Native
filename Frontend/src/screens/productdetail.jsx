@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -35,12 +36,15 @@ const colors = [
   { name: 'Tan', value: '#C49A6C' },
 ];
 
- const ProductDetail = () => {
+ const ProductDetail = ({ route}) => {
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState('Black');
   const [favorite, setFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  const navigation = useNavigation();
+  const item = route.params;
 
   const discount = Math.round(
     ((product.oldPrice - product.price) / product.oldPrice) * 100
@@ -78,7 +82,7 @@ const colors = [
         {/* Product Image */}
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: product.images[selectedImage] }}
+            source={{ uri: item.images[selectedImage] }}
             style={styles.mainImage}
           />
 
