@@ -22,10 +22,6 @@ const Stack = createStackNavigator();
 const HomeStackNavigatior = () => {
   return (
      <Drawer.Navigator
-     options={{ 
-      headerTitle:"My Store",
-      headerTitleAlign: 'center',
-     }}  
         //   drawerContent={(props) => <CustomDrawerContent {...props} />}
         //   screenOptions={{
         //     headerStyle: {
