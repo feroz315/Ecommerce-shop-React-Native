@@ -115,23 +115,23 @@ const colors = [
 
         {/* Product Information */}
         <View style={styles.content}>
-          <Text style={styles.brand}>{product.brand}</Text>
+          <Text style={styles.brand}>{item.brand}</Text>
 
-          <Text style={styles.productName}>{product.name}</Text>
+          <Text style={styles.productName}>{item.name}</Text>
 
           {/* Rating */}
           <View style={styles.ratingRow}>
             <Text style={styles.stars}>★★★★★</Text>
-            <Text style={styles.rating}>{product.rating}</Text>
+            <Text style={styles.rating}>{item.rating}</Text>
             <Text style={styles.reviewCount}>
-              ({product.reviews} reviews)
+              ({item.reviews} reviews)
             </Text>
           </View>
 
           {/* Price */}
           <View style={styles.priceRow}>
-            <Text style={styles.price}>${product.price}</Text>
-            <Text style={styles.oldPrice}>${product.oldPrice}</Text>
+            <Text style={styles.price}>${item.price}</Text>
+            <Text style={styles.oldPrice}>${item.oldPrice}</Text>
           </View>
 
           <View style={styles.separator} />
@@ -225,7 +225,7 @@ const colors = [
           <Text style={styles.sectionTitle}>Description</Text>
 
           <Text style={styles.description}>
-            {product.description}
+            {item.description}
           </Text>
 
           <Text style={styles.readMore}>Read more</Text>
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
   },
 
   brand: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#85867F',
     fontWeight: '800',
     letterSpacing: 1.5,
