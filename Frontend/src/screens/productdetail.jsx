@@ -62,7 +62,9 @@ const colors = [
       >
         {/* Header */}
         <View style={styles.header}>
-          <Pressable style={styles.headerButton}>
+          <Pressable 
+           onPress={() => navigation.goBack()}
+           style={styles.headerButton}>
             <Text style={styles.back}>‹</Text>
           </Pressable>
 
@@ -86,7 +88,7 @@ const colors = [
         {/* Product Image */}
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: item.images[selectedImage] }}
+            source={ item.image }
             style={styles.mainImage}
           />
 
@@ -97,7 +99,7 @@ const colors = [
 
         {/* Image Thumbnails */}
         <View style={styles.thumbnailRow}>
-          {product.images.map((image, index) => (
+          {item.images.map((image, index) => (
             <Pressable
               key={image}
               onPress={() => setSelectedImage(index)}
