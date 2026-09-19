@@ -5,6 +5,7 @@ import {
   View,
   Text,
   Image,
+  TouchableOpacity,
   ScrollView,
   Pressable,
   StyleSheet,
@@ -178,8 +179,9 @@ const colors = [
               </Pressable>
             ))}
            </View>
+
            {/* Size */}
-          <View style={styles.sizeHeader}>
+        <View style={styles.sizeHeader}>
             <Text style={styles.sectionTitle}>Select Size</Text>
 
             <TouchableOpacity>
@@ -188,7 +190,7 @@ const colors = [
           </View>
 
           {/* Size Buttons */}
-          <View style={styles.sizeContainer}>
+        <View style={styles.sizeContainer}>
             {sizes.map(size => (
               <TouchableOpacity
                 key={size.us}
@@ -553,6 +555,92 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
+  },
+ sizeHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  sizeGuide: {
+    color: '#2874f0',
+    fontWeight: '600',
+  },
+
+  sizeContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+
+  sizeButton: {
+    width: 52,
+    height: 45,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+    marginBottom: 10,
+  },
+
+  selectedSize: {
+    backgroundColor: '#111',
+    borderColor: '#111',
+  },
+
+  sizeText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#333',
+  },
+
+  selectedSizeText: {
+    color: '#fff',
+  },
+
+  chartContainer: {
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+
+  chartTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    padding: 15,
+  },
+
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#f5f5f5',
+    paddingVertical: 12,
+  },
+
+  tableHeaderText: {
+    flex: 1,
+    textAlign: 'center',
+    fontWeight: '700',
+    color: '#333',
+  },
+
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+
+  activeRow: {
+    backgroundColor: '#f0f0f0',
+  },
+
+  tableText: {
+    flex: 1,
+    textAlign: 'center',
+    color: '#555',
   },
 
   quantityContainer: {
