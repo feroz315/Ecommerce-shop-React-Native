@@ -11,8 +11,9 @@ import HomeScreen from './src/screens/home';
 import ProfileScreen from './src/screens/profile';
 import SettingsScreen from './src/screens/setting';
 import AboutScreen from './src/screens/about';
-import Productdetail from './src/screens/productdetail'
+import Productdetail from './src/screens/productdetail';
 import CustomDrawerContent from './src/compontents/customDrawer';
+import CartScreen from './src/screens/cart';
 
 
 const Drawer = createDrawerNavigator();
@@ -104,8 +105,14 @@ const App = () => {
       <Stack.Screen 
       options={{  headerTitle: '' }} 
       name="ProdcutDetails" component={Productdetail} />
-      </Stack.Navigator>
+            
+      <Stack.Screen 
+      options={{  headerTitle: '' }} 
+      name="Cart" component={CartScreen} />
+
       
+      </Stack.Navigator>
+           
       </NavigationContainer>
     </SafeAreaProvider>
 

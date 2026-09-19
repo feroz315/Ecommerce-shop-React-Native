@@ -42,7 +42,7 @@ const sizes = [
   {us: '9', uk: '8', eu: '41', cm: '27'},
   {us: '10', uk: '9', eu: '42', cm: '28'},
   {us: '11', uk: '10', eu: '43', cm: '29'},
-  {us: '12', uk: '11', eu: '44', cm: '30'},
+  // {us: '12', uk: '11', eu: '44', cm: '30'},
 ];
 
 const colors = [
@@ -112,7 +112,7 @@ const colors = [
         </View>
 
         {/* Image Thumbnails */}
-        <View style={styles.thumbnailRow}>
+        {/* <View style={styles.thumbnailRow}>
           {item.images.map((image, index) => (
             <Pressable
               key={image}
@@ -128,7 +128,7 @@ const colors = [
               />
             </Pressable>
           ))}
-         </View>
+         </View> */}
 
         {/* Product Information */}
         <View style={styles.content}>
@@ -264,7 +264,7 @@ const colors = [
             </View>
           </View>
 
-          {/* Benefits */}
+          {/* Benefits
           <View style={styles.benefits}>
             <View style={styles.benefit}>
               <Text style={styles.benefitIcon}>✓</Text>
@@ -295,7 +295,7 @@ const colors = [
                 </Text>
               </View>
             </View>
-           </View>
+           </View> */}
 
           {/* Description */}
           <Text style={styles.sectionTitle}>Description</Text>
@@ -304,10 +304,10 @@ const colors = [
             {item.description}
           </Text>
 
-          <Text style={styles.readMore}>Read more</Text>
+          {/* <Text style={styles.readMore}>Read more</Text> */}
 
           {/* Details */}
-          <Text style={styles.sectionTitle}>Product Details</Text>
+          {/* <Text style={styles.sectionTitle}>Product Details</Text> */}
 
           {/* <View style={styles.detailsCard}>
             <DetailRow label="Material" value="Full-grain leather" />
@@ -327,7 +327,9 @@ const colors = [
           </Text>
         </View>
 
-        <Pressable style={styles.addButton}>
+        <Pressable 
+         onPress={() => navigation.navigate("Cart")}
+         style={styles.addButton}>
           <Text style={styles.cartIcon}>🛒</Text>
           <Text style={styles.addButtonText}>Add to Cart</Text>
         </Pressable>
@@ -517,6 +519,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 14,
+    marginTop:10
   },
 
   optionTitle: {

@@ -30,7 +30,7 @@ const HomeScreen = () => {
 const renderItem = ({ item }) => (
     <TouchableOpacity
        onPress={() => {
-          navigation.navigate('ProdcutDetails', {...item});
+          navigation.navigate('Cart');
          }}>
            
       {/* <Image 
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
  });
 
- 
+
 export default HomeScreen;
 
 
