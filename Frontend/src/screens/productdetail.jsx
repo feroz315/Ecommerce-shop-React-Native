@@ -34,6 +34,16 @@ const product = {
   ],
 };
 
+const sizes = [
+  {us: '6', uk: '5', eu: '38', cm: '24'},
+  {us: '7', uk: '6', eu: '39', cm: '25'},
+  {us: '8', uk: '7', eu: '40', cm: '26'},
+  {us: '9', uk: '8', eu: '41', cm: '27'},
+  {us: '10', uk: '9', eu: '42', cm: '28'},
+  {us: '11', uk: '10', eu: '43', cm: '29'},
+  {us: '12', uk: '11', eu: '44', cm: '30'},
+];
+
 const colors = [
   { name: 'Black', value: '#171717' },
   { name: 'Brown', value: '#7A4B2A' },
@@ -44,8 +54,11 @@ const colors = [
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState('Black');
+  const [selectedSize, setSelectedSize] = useState(null);
   const [favorite, setFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+
 
   const navigation = useNavigation();
   const item = route.params;
@@ -165,6 +178,64 @@ const colors = [
               </Pressable>
             ))}
            </View>
+           {/* Size */}
+          <View style={styles.sizeHeader}>
+            <Text style={styles.sectionTitle}>Select Size</Text>
+
+            <TouchableOpacity>
+              <Text style={styles.sizeGuide}>Size Guide</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Size Buttons */}
+          <View style={styles.sizeContainer}>
+            {sizes.map(size => (
+              <TouchableOpacity
+                key={size.us}
+                style={[
+                  styles.sizeButton,
+                  selectedSize === size.us && styles.selectedSize,
+                ]}
+                onPress={() => setSelectedSize(size.us)}>
+                <Text
+                  style={[
+                    styles.sizeText,
+                    selectedSize === size.us && styles.selectedSizeText,
+                  ]}>
+                  {size.us}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Size Chart */}
+          <View style={styles.chartContainer}>
+            <Text style={styles.chartTitle}>Shoe Size Chart</Text>
+
+            <View style={styles.tableHeader}>
+              <Text style={styles.tableHeaderText}>US</Text>
+              <Text style={styles.tableHeaderText}>UK</Text>
+              <Text style={styles.tableHeaderText}>EU</Text>
+              <Text style={styles.tableHeaderText}>CM</Text>
+            </View>
+
+            {sizes.map(size => (
+              <View
+                key={size.us}
+                style={[
+                  styles.tableRow,
+                  selectedSize === size.us && styles.activeRow,
+                ]}>
+
+                <Text style={styles.tableText}>{size.us}</Text>
+                <Text style={styles.tableText}>{size.uk}</Text>
+                <Text style={styles.tableText}>{size.eu}</Text>
+                <Text style={styles.tableText}>{size.cm}</Text>
+
+              </View>
+            ))}
+          </View>
+
 
           {/* Quantity */}
           <View style={styles.optionHeader}>
@@ -314,7 +385,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     marginHorizontal: 16,
-    height: width * 0.95,
+    height: width * 0.80,
     borderRadius: 28,
     overflow: 'hidden',
     backgroundColor: '#E9E4DC',
