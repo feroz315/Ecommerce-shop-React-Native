@@ -80,7 +80,7 @@ const colors = [
               {favorite ? '♥' : '♡'}
             </Text>
           </Pressable>
-        </View>
+         </View>
 
         {/* Product Image */}
         <View style={styles.imageContainer}>
@@ -111,7 +111,7 @@ const colors = [
               />
             </Pressable>
           ))}
-        </View>
+         </View>
 
         {/* Product Information */}
         <View style={styles.content}>
@@ -140,7 +140,7 @@ const colors = [
           <View style={styles.optionHeader}>
             <Text style={styles.optionTitle}>Color</Text>
             <Text style={styles.selectedOption}>{selectedColor}</Text>
-          </View>
+           </View>
 
           <View style={styles.colorRow}>
             {colors.map((color) => (
@@ -161,13 +161,13 @@ const colors = [
                 />
               </Pressable>
             ))}
-          </View>
+           </View>
 
           {/* Quantity */}
           <View style={styles.optionHeader}>
             <Text style={styles.optionTitle}>Quantity</Text>
 
-            <View style={styles.quantityContainer}>
+           <View style={styles.quantityContainer}>
               <Pressable
                 onPress={() =>
                   setQuantity(Math.max(1, quantity - 1))
@@ -219,7 +219,7 @@ const colors = [
                 </Text>
               </View>
             </View>
-          </View>
+           </View>
 
           {/* Description */}
           <Text style={styles.sectionTitle}>Description</Text>
@@ -247,7 +247,7 @@ const colors = [
         <View>
           <Text style={styles.totalLabel}>Total</Text>
           <Text style={styles.totalPrice}>
-            ${(product.price * quantity).toFixed(2)}
+            ${(item.price * quantity).toFixed(2)}
           </Text>
         </View>
 
