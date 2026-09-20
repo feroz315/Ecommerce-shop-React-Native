@@ -31,7 +31,7 @@ const HomeScreen = () => {
 const renderItem = ({ item }) => (
     <TouchableOpacity
        onPress={() => {
-          navigation.navigate('Cart');
+          navigation.navigate('ProdcutDetails', {...item});
          }}>
            
       {/* <Image 
