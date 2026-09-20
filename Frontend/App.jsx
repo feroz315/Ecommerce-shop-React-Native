@@ -14,6 +14,8 @@ import AboutScreen from './src/screens/about';
 import Productdetail from './src/screens/productdetail';
 import CustomDrawerContent from './src/compontents/customDrawer';
 import CartScreen from './src/screens/cart';
+import CheckoutScreen from './src/screens/checkout';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -109,6 +111,12 @@ const App = () => {
       <Stack.Screen 
       options={{  headerTitle: '' }} 
       name="Cart" component={CartScreen} />
+
+    <Stack.Screen 
+       options={{
+       headerShown: false,
+       }} 
+      name="Checkout" component={CheckoutScreen} />
 
       
       </Stack.Navigator>

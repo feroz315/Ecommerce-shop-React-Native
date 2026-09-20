@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+
 const initialCart = [
   {
     id: '1',
@@ -199,7 +200,8 @@ const CartScreen = ({navigation}) => {
               </Text>
             </View>
 
-            <TouchableOpacity style={styles.checkoutButton}>
+            <TouchableOpacity style={styles.checkoutButton}
+             onPress={() => navigation.navigate("Checkout")}>           
               <Text style={styles.checkoutText}>
                 Proceed to Checkout
               </Text>
