@@ -267,7 +267,8 @@ const CheckoutScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.placeOrderButton}
-          onPress={placeOrder}
+          onPress={() => navigation.navigate("Profile")}           
+         
           activeOpacity={0.8}
         >
           <Text style={styles.placeOrderText}>
