@@ -41,6 +41,7 @@ const initialCart = [
   },
 ];
 
+
 const CartScreen = ({navigation}) => {
   const [cart, setCart] = useState(initialCart);
 
