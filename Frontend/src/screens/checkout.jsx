@@ -11,6 +11,8 @@ import {
   Alert,
 } from 'react-native';
 
+
+
 const CheckoutScreen = ({ navigation }) => {
   const [paymentMethod, setPaymentMethod] = useState('card');
 

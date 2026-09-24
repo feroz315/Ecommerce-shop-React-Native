@@ -11,6 +11,8 @@ import {
   Alert,
 } from 'react-native';
 
+
+
 const ProfileScreen = ({ navigation }) => {
 
   const menuItems = [
@@ -83,6 +85,7 @@ const ProfileScreen = ({ navigation }) => {
       ]
     );
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
