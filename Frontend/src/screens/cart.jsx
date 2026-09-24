@@ -11,6 +11,8 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
+
+
 const initialCart = [
   {
     id: '1',
