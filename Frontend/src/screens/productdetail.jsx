@@ -17,7 +17,6 @@ import {useNavigation} from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 
-
 const product = {
   name: 'Minimal Leather Backpack',
   brand: 'NOVA',
