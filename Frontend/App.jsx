@@ -18,7 +18,6 @@ import CheckoutScreen from './src/screens/checkout';
 
 
 
-
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
