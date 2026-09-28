@@ -88,6 +88,7 @@ const HomeStackNavigatior = () => {
 };
 
 
+
 const App = () => {
   return (
     <SafeAreaProvider>

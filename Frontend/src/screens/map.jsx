@@ -110,6 +110,7 @@ const Delivery = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
   },
 });
+
 
 export default Delivery;
 

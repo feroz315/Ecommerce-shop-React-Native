@@ -49,6 +49,7 @@ const colors = [
   { name: 'Tan', value: '#C49A6C' },
 ];
 
+
  const ProductDetail = ({ route}) => {
 
   const [selectedImage, setSelectedImage] = useState(0);
