@@ -12,7 +12,6 @@ import {
 
 
 
-
 const ProfileScreen = ({ navigation }) => {
 
   const menuItems = [

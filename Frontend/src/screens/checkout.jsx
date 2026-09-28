@@ -12,7 +12,6 @@ import {
 
 
 
-
 const CheckoutScreen = ({ navigation }) => {
   const [paymentMethod, setPaymentMethod] = useState('card');
 
