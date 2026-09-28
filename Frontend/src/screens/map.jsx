@@ -100,7 +100,7 @@ const Delivery = () => {
           </TouchableOpacity>
           
         )}
-            <TouchableOpacity style={styles.button} onPress={() => navigation.replace('profile')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.replace('HomeMenu')}>
             <Text style={styles.buttonText}>Dispatch Now</Text>
           </TouchableOpacity>        
         {/* <Button title="Drop Pin" onPress={() => showPinToast(newPin, coordinate)} /> */}
