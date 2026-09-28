@@ -15,6 +15,7 @@ import Productdetail from './src/screens/productdetail';
 import CustomDrawerContent from './src/compontents/customDrawer';
 import CartScreen from './src/screens/cart';
 import CheckoutScreen from './src/screens/checkout';
+import Delivery from './src/screens/map';
 
 
 
@@ -121,6 +122,13 @@ const App = () => {
      <Stack.Screen
       name="Profile"
       component={ProfileScreen}
+      options={{
+      headerShown: false,
+      }}
+        />
+     <Stack.Screen
+      name="Map"
+      component={Delivery}
       options={{
       headerShown: false,
       }}
