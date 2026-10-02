@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 
 
 
+
 const { width } = Dimensions.get('window');
 
 
