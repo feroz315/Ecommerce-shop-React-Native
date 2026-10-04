@@ -22,7 +22,6 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 
-
 const HomeStackNavigatior = () => {
   return (
      <Drawer.Navigator
@@ -86,7 +85,6 @@ const HomeStackNavigatior = () => {
          </Drawer.Navigator>   
   );
 };
-
 
 
 const App = () => {
