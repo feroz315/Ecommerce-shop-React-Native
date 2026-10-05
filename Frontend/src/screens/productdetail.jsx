@@ -14,7 +14,6 @@ import {useNavigation} from '@react-navigation/native';
 
 
 
-
 const { width } = Dimensions.get('window');
 
 
@@ -810,6 +809,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
 });
+
 
 
 export default ProductDetail;
