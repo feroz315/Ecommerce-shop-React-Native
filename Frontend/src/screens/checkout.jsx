@@ -282,6 +282,7 @@ const CheckoutScreen = ({ navigation }) => {
 
 export default CheckoutScreen;
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
