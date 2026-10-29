@@ -5,6 +5,7 @@ import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import { shoesData } from "../config/api";
 
 
+
 const URL_API = "https://mocki.io/v1/20a23fa8-7a39-45e8-9393-e03c275b28dd";
 
 
