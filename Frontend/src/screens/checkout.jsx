@@ -282,7 +282,6 @@ const CheckoutScreen = ({ navigation }) => {
 
 
 
-
 export default CheckoutScreen;
 
 
